@@ -112,4 +112,64 @@
 
   themeToggle.addEventListener("click", () => {
     const isLight = body.classList.toggle("light-theme");
-    localStorage.setItem(THEME_KEY, isLight ? "light" : "dark
+    localStorage.setItem(THEME_KEY, isLight ? "light" : "dark");
+    themeToggle.setAttribute("aria-pressed", String(isLight));
+  });
+
+  /* ----------------------------------------------------------
+     4. FAQ ACCORDION
+     ---------------------------------------------------------- */
+  document.querySelectorAll(".faq-item").forEach((item) => {
+    const btn = item.querySelector(".faq-item__question");
+    if (!btn) return;
+    btn.addEventListener("click", () => {
+      const isOpen = item.classList.contains("is-open");
+      document.querySelectorAll(".faq-item.is-open").forEach((open) => {
+        if (open !== item) open.classList.remove("is-open");
+      });
+      item.classList.toggle("is-open", !isOpen);
+    });
+  });
+
+  /* ----------------------------------------------------------
+     5. INTERSECTION OBSERVER — FADE-UP ON SCROLL
+     ---------------------------------------------------------- */
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.14, rootMargin: "0px 0px -60px 0px" }
+  );
+
+  document.querySelectorAll(".fade-up").forEach((el) => {
+    if (!el.closest(".hero")) observer.observe(el);
+  });
+
+  /* ----------------------------------------------------------
+     6. HEADER HIDE ON SCROLL DOWN
+     ---------------------------------------------------------- */
+  const header = document.querySelector(".header");
+  let lastScroll = 0;
+  let headerHidden = false;
+
+  window.addEventListener(
+    "scroll",
+    () => {
+      const y = window.scrollY;
+      if (y > 120 && y > lastScroll && !headerHidden) {
+        header.style.transform = "translateY(-110%)";
+        headerHidden = true;
+      } else if (y < lastScroll && headerHidden) {
+        header.style.transform = "translateY(0)";
+        headerHidden = false;
+      }
+      lastScroll = y;
+    },
+    { passive: true }
+  );
+})();
