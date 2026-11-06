@@ -44,7 +44,7 @@ body.light-theme {
 *::before,
 *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-html { scroll-behavior: auto; } /* Lenis handles it */
+html { scroll-behavior: auto; }
 
 body {
   font-family: var(--font-body);
@@ -62,7 +62,6 @@ a { color: inherit; text-decoration: none; }
 button { font-family: inherit; background: none; border: none; cursor: pointer; color: inherit; }
 ul { list-style: none; }
 
-/* Hide scrollbar (Mac OS style) */
 ::-webkit-scrollbar { width: 0; height: 0; }
 html { scrollbar-width: none; -ms-overflow-style: none; }
 
@@ -224,7 +223,6 @@ body.light-theme .bg-video__vignette {
   gap: 14px;
 }
 
-/* Theme toggle */
 .theme-toggle {
   width: 42px; height: 42px;
   display: grid;
@@ -292,9 +290,9 @@ body.light-theme .theme-toggle__icon--light { display: inline; }
   padding: 0 clamp(20px, 5vw, 64px);
   max-width: 1280px;
   margin: 0 auto;
+  transition: filter 0.35s var(--ease);
 }
 
-/* HERO */
 .hero {
   min-height: 100vh;
   display: flex;
@@ -327,7 +325,6 @@ body.light-theme .theme-toggle__icon--light { display: inline; }
   margin-top: 44px;
 }
 
-/* SECTION */
 .section { padding: clamp(80px, 12vh, 140px) 0; }
 
 .section__head { max-width: 720px; margin-bottom: 56px; }
@@ -513,17 +510,6 @@ body.light-theme .theme-toggle__icon--light { display: inline; }
 }
 
 /* ============================================================
-   CONTACT
-   ============================================================ */
-.section--contact { padding-bottom: clamp(100px, 16vh, 180px); }
-.contact-card {
-  text-align: center;
-  padding: clamp(48px, 8vw, 80px) clamp(24px, 6vw, 64px);
-}
-.contact-card .section__title { margin-bottom: 16px; }
-.contact-card .section__lead { margin: 0 auto 36px; max-width: 520px; }
-
-/* ============================================================
    FOOTER
    ============================================================ */
 .footer {
@@ -560,9 +546,6 @@ body.light-theme .theme-toggle__icon--light { display: inline; }
 .delay-1 { transition-delay: 0.12s; }
 .delay-2 { transition-delay: 0.24s; }
 .delay-3 { transition-delay: 0.36s; }
-
-/* Velocity blur (applied via JS on the wrapper) */
-.content { transition: filter 0.35s var(--ease); }
 
 /* ============================================================
    RESPONSIVE
