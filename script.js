@@ -21,7 +21,6 @@
     splash.classList.add("is-hidden");
     body.classList.remove("loading");
 
-    // Reveal hero elements once splash is gone
     setTimeout(() => {
       document.querySelectorAll(".hero .fade-up").forEach((el, i) => {
         setTimeout(() => el.classList.add("is-visible"), i * 120);
@@ -29,12 +28,10 @@
     }, 180);
   }
 
-  // Dismiss on click / key / touch
   ["click", "keydown", "touchstart"].forEach((evt) => {
     window.addEventListener(evt, dismissSplash, { once: true, passive: true });
   });
 
-  // Fallback: auto-dismiss after 6s so the site is never blocked
   setTimeout(dismissSplash, 6000);
 
   /* ----------------------------------------------------------
@@ -47,7 +44,7 @@
   if (window.Lenis) {
     lenis = new Lenis({
       duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // expo out
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
       smoothTouch: false,
     });
@@ -58,10 +55,8 @@
     }
     requestAnimationFrame(raf);
 
-    // Velocity motion blur: blur content on fast scroll, sharp on stop
     lenis.on("scroll", ({ velocity }) => {
       const abs = Math.abs(velocity);
-      // Map velocity (px/frame) to a subtle blur (0 - 3px)
       const target = Math.min(abs / 12, 3);
       if (Math.abs(target - currentBlur) > 0.15) {
         currentBlur = target;
@@ -74,7 +69,6 @@
       }, 120);
     });
 
-    // Anchor links → lenis scroll
     document.querySelectorAll('a[href^="#"]').forEach((link) => {
       link.addEventListener("click", (e) => {
         const id = link.getAttribute("href");
@@ -86,7 +80,6 @@
       });
     });
   } else {
-    // Fallback: native smooth scroll
     document.querySelectorAll('a[href^="#"]').forEach((link) => {
       link.addEventListener("click", (e) => {
         const id = link.getAttribute("href");
@@ -119,66 +112,4 @@
 
   themeToggle.addEventListener("click", () => {
     const isLight = body.classList.toggle("light-theme");
-    localStorage.setItem(THEME_KEY, isLight ? "light" : "dark");
-    themeToggle.setAttribute("aria-pressed", String(isLight));
-  });
-
-  /* ----------------------------------------------------------
-     4. FAQ ACCORDION
-     ---------------------------------------------------------- */
-  document.querySelectorAll(".faq-item").forEach((item) => {
-    const btn = item.querySelector(".faq-item__question");
-    if (!btn) return;
-    btn.addEventListener("click", () => {
-      const isOpen = item.classList.contains("is-open");
-      // Close all (single-open accordion behaviour)
-      document.querySelectorAll(".faq-item.is-open").forEach((open) => {
-        if (open !== item) open.classList.remove("is-open");
-      });
-      item.classList.toggle("is-open", !isOpen);
-    });
-  });
-
-  /* ----------------------------------------------------------
-     5. INTERSECTION OBSERVER — FADE-UP ON SCROLL
-     ---------------------------------------------------------- */
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("is-visible");
-          observer.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 0.14, rootMargin: "0px 0px -60px 0px" }
-  );
-
-  document.querySelectorAll(".fade-up").forEach((el) => {
-    // Hero elements are handled after splash dismiss; observe the rest
-    if (!el.closest(".hero")) observer.observe(el);
-  });
-
-  /* ----------------------------------------------------------
-     6. HEADER HIDE ON SCROLL DOWN (subtle)
-     ---------------------------------------------------------- */
-  const header = document.querySelector(".header");
-  let lastScroll = 0;
-  let headerHidden = false;
-
-  window.addEventListener(
-    "scroll",
-    () => {
-      const y = window.scrollY;
-      if (y > 120 && y > lastScroll && !headerHidden) {
-        header.style.transform = "translateY(-110%)";
-        headerHidden = true;
-      } else if (y < lastScroll && headerHidden) {
-        header.style.transform = "translateY(0)";
-        headerHidden = false;
-      }
-      lastScroll = y;
-    },
-    { passive: true }
-  );
-})();
+    localStorage.setItem(THEME_KEY, isLight ? "light" : "dark
